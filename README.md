@@ -10,7 +10,7 @@
 https://utoronto.zoom.us/j/88388656730)
 * Time: Mondays and Wednesdays, 1-3pm
 * Office hours: By Appointment
-* Course Forum: [Piazza](https://piazza.com/utoronto.ca/winter2023/jsc370/home)
+* Course Forum: Quercus
 * [Course syllabus](JSC370-Syllabus-2023.pdf)
 * [Lab materials](https://github.com/JSC370/jsc370-2023/tree/main/labs)
 
@@ -19,18 +19,18 @@ https://utoronto.zoom.us/j/88388656730)
 |   | Topics/Weekly Activities  | [Due Dates](https://q.utoronto.ca/courses/256479/assignments) <br> by 11:59 pm Thursdays  |
 |---|---|---|
 |  **Week 1** <br> January 9 [lecture](https://github.com/JSC370/jsc370-2023/blob/main/01-Introduction.pdf) <br> January 11 [lab](https://jsc370.github.io/jsc370-2023/labs/lab01/lab01-hello-R.html)  |  Introduction to Data Science tools: R, markdown |  **Lab 1** |
-|  **Week 2** <br> January 16 (guest speaker/[lecture](https://github.com/JSC370/jsc370-2023/blob/main/02%20-%20VersionControl-git.pdf)<br> January 18 [lab](https://jsc370.github.io/jsc370-2023/labs/lab02/lab02-github.html) |   <br> Version Control & Reproducible Research, Git |  **Lab 2, Reflection**|
-|  **Week 3** <br> January 23 guest speaker/[lecture](https://github.com/JSC370/jsc370-2023/blob/main/03-eda.pdf) <br> January 25 [lab](https://jsc370.github.io/jsc370-2023/labs/lab03/lab03-EDA.html)  | Stefanie Nickels (Verily) <br> Exploratory Data Analysis  |**Lab3, Reflection**|
-|  **Week 4** <br> January 30 (guest speaker/[lecture](https://github.com/JSC370/jsc370-2023/blob/main/04-viz.pdf), [paper](https://github.com/JSC370/jsc370-2023/blob/main/Neman-Neurosurgery-2021.pdf) <br> February 1 [lab](https://jsc370.github.io/jsc370-2023/labs/lab04/lab04-data-viz.html) |  [Kathy Evans](https://www.linkedin.com/in/katherine-evans-060a9bb/) (NBA) <br> Data visualization |   **[HW1](https://github.com/JSC370/jsc370-2023/blob/main/homework/hw1/hw1.pdf), Lab4, Reflection**   |
-|  **Week 5** <br> February 6 guest speaker/[lecture](https://github.com/JSC370/jsc370-2023/blob/main/05-wrangling-gam.pdf) <br> February 8 [lab](https://jsc370.github.io/jsc370-2023/labs/lab05/lab05-wrangling-gam.html)  | Graduate student panel (U of T) <br> Data cleaning and wrangling <br> ML 1 (advanced regression) | **Lab5, Reflection** |
-|  **Week 6** <br> February 13 guest speaker/[lecture](https://github.com/JSC370/jsc370-2023/blob/main/06-regex-api.pdf) <br> February 15 [lab](https://jsc370.github.io/jsc370-2023/labs/lab06/lab06-regex-web-scraping.html)  | [Paul Varghese](https://www.linkedin.com/in/paulgeorgevarghese/) (Verily)<br> Regular Expressions, Big Data, Data scraping, using APIs  |  **[HW2](https://github.com/JSC370/jsc370-2023/blob/main/homework/hw2/hw2.pdf), Lab6, Reflection**  |
+|  **Week 2** <br> January 16 [lecture](https://github.com/JSC370/jsc370-2023/blob/main/02%20-%20VersionControl-git.pdf)<br> January 18 [lab](https://jsc370.github.io/jsc370-2023/labs/lab02/lab02-github.html) |   <br> Version Control & Reproducible Research, Git |  **Lab 2**|
+|  **Week 3** <br> January 23 [lecture](https://github.com/JSC370/jsc370-2023/blob/main/03-eda.pdf) <br> January 25 [lab](https://jsc370.github.io/jsc370-2023/labs/lab03/lab03-EDA.html)  |  Exploratory Data Analysis  |**Lab3**|
+|  **Week 4** <br> January 30 [lecture](https://github.com/JSC370/jsc370-2023/blob/main/04-viz.pdf), [paper](https://github.com/JSC370/jsc370-2023/blob/main/Neman-Neurosurgery-2021.pdf) <br> February 1 [lab](https://jsc370.github.io/jsc370-2023/labs/lab04/lab04-data-viz.html) |  Data visualization |   **[HW1](https://github.com/JSC370/jsc370-2023/blob/main/homework/hw1/hw1.pdf), Lab4**   |
+|  **Week 5** <br> February 6 [lecture](https://github.com/JSC370/jsc370-2023/blob/main/05-wrangling-gam.pdf) <br> February 8 [lab](https://jsc370.github.io/jsc370-2023/labs/lab05/lab05-wrangling-gam.html)  | Data cleaning and wrangling <br> ML 1 (advanced regression) | **Lab5** |
+|  **Week 6** <br> February 13 [lecture](https://github.com/JSC370/jsc370-2023/blob/main/06-regex-api.pdf) <br> February 15 [lab](https://jsc370.github.io/jsc370-2023/labs/lab06/lab06-regex-web-scraping.html)  | Regular Expressions, Big Data, Data scraping, using APIs  |  **[HW2](https://github.com/JSC370/jsc370-2023/blob/main/homework/hw2/hw2.pdf), Lab6**  |
 |  **Week 7** <br> February 20/22  | Reading Week  |   |
-|  **Week 8** <br> February 27 guest speaker/[lecture](https://github.com/JSC370/jsc370-2023/blob/main/08-textmining.pdf) <br> March 1 [lab](https://jsc370.github.io/jsc370-2023/labs/lab08/lab08-text-mining.html) | [Lisa Strug](https://www.dlsph.utoronto.ca/faculty-profile/strug-lisa-joanna/) (U of T) <br> Text mining  |  **Lab8, Reflection** |
-|  **Week 9** <br> March 6 guest speaker/[lecture](https://github.com/JSC370/jsc370-2023/blob/main/09-hpc.pdf) <br> March 8 [lab](https://jsc370.github.io/jsc370-2023/labs/lab09/lab09-hpc.html) | [Alistair Johnson](https://alistairewj.github.io/) (Sick Kids) <br> High performance computing, cloud computing  | **[Midterm](https://github.com/JSC370/jsc370-2023/blob/main/07-midterm.pdf), Lab9, Reflection**   |
-|  **Week 10** <br> March 13 guest speaker/[lecture](https://github.com/JSC370/jsc370-2023/blob/main/10-ml-boosting.pdf) <br> March 15 [lab](https://github.com/JSC370/jsc370-2023/blob/main/labs/lab10/lab10-trees-rf-gbm.html) | Ellen Stephenson (U of T)  <br> ML 2 (elastic net, xgboost)   | **[HW3](https://github.com/JSC370/jsc370-2023/blob/main/homework/hw3/hw3.pdf) Lab10, Reflection** |
-|  **Week 11** <br> March 20 guest speaker/[lecture](https://github.com/JSC370/jsc370-2023/blob/main/11-interactive-viz1.pdf) <br> March 22 [lab10b](https://jsc370.github.io/jsc370-2023/labs/lab11/lab10b-boosting.html),  [lab11](https://jsc370.github.io/jsc370-2023/labs/lab11/lab11-interactive-viz.html) | [Amy Braverman](https://en.wikipedia.org/wiki/Amy_Braverman) (NASA) <br> Interactive visualization and effective data communication I  |  **Lab11, Reflection**  |
-|  **Week 12** <br> March 27 (guest speaker/lecture) <br> March 29 (lab) | Sofia Ruiz (National University of Rosario) and Yunyi Shen (U Wisconsin-Madison)  <br> Interactive visualization and effective data communication II  | **[HW4](https://github.com/JSC370/jsc370-2023/blob/main/homework/hw4/hw4.pdf), Lab12, Reflection**  |
-|  **Week 13** <br> April 3 (guest speaker/lecture) <br> April 5 (lab) | [Radu Craiu](https://utstat.toronto.edu/craiu/) (U of T) <br> Final Porject Workshop |  **[HW5](https://github.com/JSC370/jsc370-2023/blob/main/homework/hw5/hw5.pdf), Reflection** |
+|  **Week 8** <br> February 27 [lecture](https://github.com/JSC370/jsc370-2023/blob/main/08-textmining.pdf) <br> March 1 [lab](https://jsc370.github.io/jsc370-2023/labs/lab08/lab08-text-mining.html) | Text mining  |  **Lab8** |
+|  **Week 9** <br> March 6 [lecture](https://github.com/JSC370/jsc370-2023/blob/main/09-hpc.pdf) <br> March 8 [lab](https://jsc370.github.io/jsc370-2023/labs/lab09/lab09-hpc.html) |  High performance computing, cloud computing  | **[Midterm](https://github.com/JSC370/jsc370-2023/blob/main/07-midterm.pdf), Lab9, Reflection**   |
+|  **Week 10** <br> March 13 [lecture](https://github.com/JSC370/jsc370-2023/blob/main/10-ml-boosting.pdf) <br> March 15 [lab](https://github.com/JSC370/jsc370-2023/blob/main/labs/lab10/lab10-trees-rf-gbm.html) |  ML 2 (elastic net, xgboost)   | **[HW3](https://github.com/JSC370/jsc370-2023/blob/main/homework/hw3/hw3.pdf) Lab10** |
+|  **Week 11** <br> March 20 [lecture](https://github.com/JSC370/jsc370-2023/blob/main/11-interactive-viz1.pdf) <br> March 22 [lab10b](https://jsc370.github.io/jsc370-2023/labs/lab11/lab10b-boosting.html),  [lab11](https://jsc370.github.io/jsc370-2023/labs/lab11/lab11-interactive-viz.html) | <br> Interactive visualization and effective data communication I  |  **Lab11**  |
+|  **Week 12** <br> March 27 lecture <br> March 29 (lab) | Interactive visualization and effective data communication II  | **[HW4](https://github.com/JSC370/jsc370-2023/blob/main/homework/hw4/hw4.pdf), Lab12, Reflection**  |
+|  **Week 13** <br> April 3 lecture <br> April 5 (lab) |  Final Porject Workshop |  **[HW5](https://github.com/JSC370/jsc370-2023/blob/main/homework/hw5/hw5.pdf)** |
 |  **Week 15** <br> April 21 (final exam period) | |  **[Final Project](https://github.com/JSC370/jsc370-2023/blob/main/15-final.pdf)** |
 
 ### Grading Breakdown
@@ -39,9 +39,9 @@ https://utoronto.zoom.us/j/88388656730)
 |---|---|
 |Labs|10|
 |Guest speaker reflections|5|
-|Homework (5)|50|
-|Midterm report|15|
-|Final project|20|
+|Homework (5)|25|
+|Midterm report|25|
+|Final project|35|
 
 
 ### Website reference:
