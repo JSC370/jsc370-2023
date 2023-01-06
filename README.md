@@ -6,7 +6,7 @@
 * Instructor: [Meredith Franklin](https://meredithfranklin.github.io)
 * Teaching Assistant: [Michael Jongho Moon](https://micbon.com)
 * Email: <meredith.franklin@utoronto.ca>, please put "JSC370" in the subject line.
-* Location: BA1210 and [zoom](
+* Location: BA1210
 https://utoronto.zoom.us/j/88388656730)
 * Time: Mondays and Wednesdays, 1-3pm
 * Office hours: By Appointment
