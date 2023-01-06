@@ -1,4 +1,4 @@
-## JSC370: Data Science II (Winter 2022), University of Toronto
+## JSC370: Data Science II (Winter 2023), University of Toronto
 
 <img src="assets/datascience.png" width="400">
 
@@ -10,7 +10,7 @@
 https://utoronto.zoom.us/j/88388656730)
 * Time: Mondays and Wednesdays, 1-3pm
 * Office hours: By Appointment
-* Course Forum: [Piazza](https://piazza.com/utoronto.ca/winter2022/jsc370/home)
+* Course Forum: [Piazza](https://piazza.com/utoronto.ca/winter2023/jsc370/home)
 * [Course syllabus](JSC370-Syllabus-2023.pdf)
 * [Lab materials](https://github.com/JSC370/jsc370-2023/tree/main/labs)
 
