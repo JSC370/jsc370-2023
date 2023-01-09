@@ -17,7 +17,7 @@
 
 |   | Topics/Weekly Activities  | [Due Dates](https://q.utoronto.ca/courses/256479/assignments) <br> by 11:59 pm Thursdays  |
 |---|---|---|
-|  **Week 1** <br> January 9 [lecture](https://github.com/JSC370/jsc370-2023/blob/main/slides/JSC370-slides-01.pdf) <br> January 11 [lab](https://jsc370.github.io/jsc370-2023/labs/lab01/lab01-hello-R.html)  |  Introduction to Data Science tools: R, markdown |  **Lab 1** |
+|  **Week 1** <br> January 9 [lecture](https://github.com/JSC370/jsc370-2023/blob/main/slides/JSC370-slides-01.html) <br> January 11 [lab](https://jsc370.github.io/jsc370-2023/labs/lab01/lab01-hello-R.html)  |  Introduction to Data Science tools: R, markdown |  **Lab 1** |
 |  **Week 2** <br> January 16 [lecture](https://github.com/JSC370/jsc370-2023/blob/main/02%20-%20VersionControl-git.pdf)<br> January 18 [lab](https://jsc370.github.io/jsc370-2023/labs/lab02/lab02-github.html) |   <br> Version Control & Reproducible Research, Git |  **Lab 2**|
 |  **Week 3** <br> January 23 [lecture](https://github.com/JSC370/jsc370-2023/blob/main/03-eda.pdf) <br> January 25 [lab](https://jsc370.github.io/jsc370-2023/labs/lab03/lab03-EDA.html)  |  Exploratory Data Analysis  |**Lab3**|
 |  **Week 4** <br> January 30 [lecture](https://github.com/JSC370/jsc370-2023/blob/main/04-viz.pdf), [paper](https://github.com/JSC370/jsc370-2023/blob/main/Neman-Neurosurgery-2021.pdf) <br> February 1 [lab](https://jsc370.github.io/jsc370-2023/labs/lab04/lab04-data-viz.html) |  Data visualization |   **[HW1](https://github.com/JSC370/jsc370-2023/blob/main/homework/hw1/hw1.pdf), Lab4**   |
