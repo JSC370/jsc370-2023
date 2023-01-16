@@ -80,6 +80,86 @@ In these cases, and no doubt others, a version control system should make your l
 
 ---
 
+## Why do we care (cont'd)
+
+&lt;div style="text-align: center;"&gt;
+  &lt;figure&gt;
+    &lt;img style="width: 600px;vertical-align: middle;"  hspace="20px" src="fig/git-flow.png" alt="Workflow"
+  &lt;/figure&gt;
+  &lt;figcaption&gt;&lt;b&gt;Source: Jenny Bryan&lt;/b&gt;&lt;/figcaption&gt;
+&lt;/div&gt;
+---
+
+## Reproducible Research
+
+- In computational sciences and data analysis, what is reproducible research?
+
+  - the data and code used to make a finding are available and they are presented in such a way that it is (relatively) straightforward for an independent researcher to recreate the finding.
+
+- This actually seldom happens. Consider two interesting articles by Tim Vines:
+
+  - The Availability of Research Data Declines Rapidly with Article Age “of 516 articles published between 2 and 22 years ago…the odds of a data set being extant fell by 17% per year.”
+    
+  - Recommendations for utilizing and reporting population genetic analyses: the reproducibility of genetic clustering using the program structure “we reanalysed data sets gathered from papers using the software package ‘structure’… 30% of analyses were unable to reproduce the same number of population clusters.”
+
+- Scientific articles have fairly detailed methods sections, but those are typically insufficient to actually reproduce an analysis. Roger Peng and Stephanie Hicks [write](https://www.annualreviews.org/doi/pdf/10.1146/annurev-publhealth-012420-105110) "Reproducibility is typically thwarted by a lack of availability of the original data and computer code."
+
+- Scientists owe it to themselves and their community to have an explicit record of all the steps in an analysis done at a computer.
+---
+
+
+## Reproducible Research Do's
+
+- Start with a good question, make sure it is focused and it is something you're interested in.
+
+- Teach your computer to do the work from beginning to end! 
+
+- Use version control.
+
+- Keep track of your software environment, from what is in your toolchain (software: Python, R, Tableau) to version numbers.
+
+- Set your seed for any random number generation or sampling! This is needed when splitting up your training and test sets.
+
+- Think about the entire pipeline.
+
+---
+
+## Reproducible Research Dont's
+
+- Don't do things by hand! 
+  - Editing spreadsheets to clean it up
+    - Removing outliers
+    - QA/QC
+    - Validating
+  - Editing tables or figures
+  - Downloading data from a website by clicking links in a web browser
+  - Splitting data and moving it around
+  - If anything is done by hand because there is no other way, document it!
+  
+- Point and click software or other interactive software
+  - This type of work is not easily reproduced because there is no trace of the steps. If you have to use it, write down the steps!
+  
+- Save output. Save the data and code that generated the output, rather than the output itself.
+---
+
+
+## Reproducible Research Challenges
+
+- Data size
+  - Try to build in your code tools that help with this, for example parallel processing
+  - Can store in smaller chunks and write code that pulls data files automatically, combining them when needed for analysis
+  - Write meta data, use tools that help with data organization
+  
+- Data complexity
+  - Try to incorporate smaller snippets of data in your workflow to check reproducibility
+  - Training, validation sets
+  - Diagnostic visualizations
+  
+- Workflow complexities
+  - Use readme files!!
+---
+
+
 ## Git: The stupid content tracker
 
 &lt;div style="text-align: center;"&gt;
@@ -112,7 +192,7 @@ There are several ways to include Git in your work-pipeline. A few are:
   
   - Git-Cola [(link)](https://git-cola.github.io/)
   
-  - Github Desktop [(Link)](https://desktop.github.com/)
+  - Github Desktop [(link)](https://desktop.github.com/)
 
 More alternatives [here](https://git-scm.com/download/gui).
 
