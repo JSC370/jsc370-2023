@@ -139,5 +139,6 @@ to get data.
 - Instagram [Developers API](https://developers.facebook.com/docs/instagram-api/)
 - LinkedIn [Developers API](https://www.linkedin.com/developers/)
 - Zillow [Developers API](https://www.zillow.com/howto/api/APIOverview.htm)
+- Spotify [Developers API](https://developer.spotify.com)
 
 
