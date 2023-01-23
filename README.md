@@ -12,6 +12,7 @@
 * Course Forum: Quercus
 * [Course syllabus](JSC370-Syllabus-2023.pdf)
 * [Lab materials](https://github.com/JSC370/jsc370-2023/tree/main/labs)
+* [Zoom](https://utoronto.zoom.us/j/88388656730) for Guest Speakers
 
 ### Weekly Course Schedule
 
