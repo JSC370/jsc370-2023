@@ -120,6 +120,7 @@ to get data.
 ### Other data
 
 - Toronto [open data](https://open.toronto.ca/)
+- Toronto [Police Department](https://data.torontopolice.on.ca/pages/open-data)
 - British Columbia [open data](https://catalogue.data.gov.bc.ca/)
 - Ontario [Data Catalogue](https://data.ontario.ca/)
 - Los Angeles [city data](https://data.lacity.org/)
