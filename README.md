@@ -16,7 +16,7 @@
 
 ### Weekly Course Schedule
 
-|   | Topics/Weekly Activities  | [Due Dates](https://q.utoronto.ca/courses/298698/assignments) <br> by 11:59 pm Wednesdays  |
+|   | Topics/Weekly Activities  | [Due Dates](https://q.utoronto.ca/courses/298698/assignments) <br> by 11:59 pm Wednesdays unless noted |
 |---|---|---|
 |  **Week 1** <br> January 9 [lecture](https://jsc370.github.io/jsc370-2023/slides/JSC370-slides-01.html) <br> January 11 [lab](https://jsc370.github.io/jsc370-2023/labs/lab01/lab01-hello-R.html)  |  Introduction to Data Science tools: R, markdown |  **Lab 1** |
 |  **Week 2** <br> January 16 [lecture](https://jsc370.github.io/jsc370-2023/slides/JSC370-slides-02.html)<br> January 18 [lab](https://jsc370.github.io/jsc370-2023/labs/lab02/lab02-github.html) |   <br> Version Control & Reproducible Research, Git |  **Lab 2**|
