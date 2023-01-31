@@ -1,12 +1,10 @@
 ---
 title: "Lab 04 - Data Visualization"
 output: 
-  tufte::tufte_html:
-    css: style.css
+  html_document:
+    html_preview: false
 link-citations: yes
 ---
-
-
 
 ```{r setup, message=FALSE, warning=FALSE}
 #install.packages(c("data.table","leaflet"))

@@ -298,10 +298,6 @@ padding: 10px;
 
 
 
-<pre class="r"><code>#install.packages(c(&quot;data.table&quot;,&quot;leaflet&quot;))
-library(data.table)
-library(leaflet)
-library(tidyverse)</code></pre>
 <div id="learning-goals" class="section level1">
 <h1>Learning Goals</h1>
 <ul>
@@ -326,10 +322,6 @@ regions of the US and by elevation.</strong></p>
 <div id="read-in-the-data" class="section level3">
 <h3>1. Read in the data</h3>
 <p>First download and then read in with data.table:fread()</p>
-<pre class="r"><code>fn &lt;- &quot;https://raw.githubusercontent.com/JSC370/jsc370-2023/main/labs/lab03/met_all.gz&quot;
-if (!file.exists(&quot;met_all.gz&quot;))
-  download.file(fn, destfile = &quot;met_all.gz&quot;)
-met &lt;- data.table::fread(&quot;met_all.gz&quot;)</code></pre>
 </div>
 <div id="prepare-the-data" class="section level3">
 <h3>2. Prepare the data</h3>
