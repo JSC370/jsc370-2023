@@ -1,0 +1,326 @@
+---
+title: "Lab 04 - Data Visualization"
+output:
+  html_document:
+    html_preview: false
+link-citations: yes
+---
+
+```{r setup, message=FALSE, warning=FALSE}
+library(data.table)
+library(leaflet)
+library(tidyverse)
+```
+
+# Learning Goals
+
+- Read in and prepare the meteorological dataset
+- Create several graphs with different `geoms()` in `ggplot2`
+- Create a facet graph
+- Conduct some customizations of the graphs
+- Create a more detailed map using `leaflet()`
+
+
+# Lab Description
+
+We will again work with the meteorological data presented in lecture.
+
+**The objective of the lab is to examine the association between weekly average dew point temperature and wind speed in four regions of the US and by elevation.**
+
+# Steps
+
+### 1. Read in the data
+
+First download and then read in with `data.table:fread()`
+
+```{r checking-file}
+fn <- paste0("https://raw.githubusercontent.com/JSC370/",
+             "jsc370-2023/main/labs/lab03/met_all.gz")
+if (!file.exists("met_all.gz")) # avoid downloading again
+  download.file(fn, destfile = "met_all.gz")
+met <- data.table::fread("met_all.gz")
+```
+
+### 2. Prepare the data
+
+- Remove temperatures less than -17C
+- Make sure there are no missing data in the key variables coded as 9999, 999, etc
+- Generate a date variable using the functions `as.Date()` (hint: You will need the following to create a date `paste(year, month, day, sep = "-")`).
+- Using the `data.table::week` function, keep the observations of the first week of the month.
+- Compute the mean by station of the variables `temp`, `rh`, `wind.sp`, `vis.dist`, `dew.point`, `lat`,`lon`, and `elev`.
+- Create a categorical variable for elevation (break point at 252 m)
+- Create a region variable for NW, SW, NE, SE based on lon = -98.00 and lat = 39.71 degrees
+
+```{r}
+# remove temperatures less than or equal to -17C / code 9999 elev as NA
+met <- met[temp > -17][elev == 9999, elev := NA]
+# create the week variable
+met[ , week := week(as.Date(paste(year, month, day, sep = "-")))]
+# select the first week
+met_first_week <- met[week == min(week, na.rm = TRUE)]
+# group and compute means
+met_avg <- met_first_week[ , .(
+  temp = mean(temp, na.rm = TRUE),
+  rh = mean(rh, na.rm = TRUE),
+  wind.sp = mean(wind.sp, na.rm = TRUE),
+  vis.dist = mean(vis.dist, na.rm = TRUE),
+  dew.point = mean(dew.point, na.rm = TRUE),
+  lat = mean(lat), lon = mean(lon),
+  elev = mean(elev, na.rm = TRUE)
+), by = "USAFID"]
+# categorize elevation
+met_avg[ , elev_cat := ifelse(elev > 252, "high", "low")]
+# categorize into 4 regions
+met_avg[ , region := ifelse(
+  lon > -98 & lat > 39.71, "North East", ifelse(
+    lon > -98, "South East", ifelse(
+      lat > 39.71, "North West", "North East"
+    )
+  )
+)]
+# simpler (cred: Kevin Wang)
+met_avg[ , region := paste(
+  ifelse(lat > 39.71, "North", "South"),
+  ifelse(lon > -98, "East", "West")
+)]
+# check counts
+table(met_avg$region, useNA = "always")
+```
+
+```{r}
+# tidyverse version
+met_avg_tidy <- met |>
+  filter(temp > -17) |>  # keep temperater > -17C
+  mutate(
+    elev = ifelse(elev == 9999, NA, elev),  # use NA to mark missing data
+    week = week(as.Date(paste(year, month, day, sep = "-"))) # create week 
+  ) |>
+  filter(week == min(week, na.rm = TRUE)) |> # select first week records only
+  group_by(USAFID) |>  # summarise per station
+  summarise(across(
+    c(temp, rh, wind.sp, vis.dist, dew.point, lat, lon, elev),
+    ~ mean(.x ,na.rm = TRUE)
+    )) |>  
+  mutate( # categorise elevation and region
+    elev_cat = if_else(elev > 252, "high", "low"),
+    region = case_when(
+      lon > -98 & lat > 39.71 ~ "North East",
+      lon > -98  ~ "South East",
+      lat > 39.71 ~ "North West",
+      TRUE ~ "South West"
+    )
+  )
+table(met_avg_tidy$region, useNA = "always")
+```
+
+### 3. Use `geom_violin` to examine the wind speed and dew point temperature by region
+
+You saw how to use `geom_boxplot` in class. Try using `geom_violin` instead (take a look at the help).
+(hint: You will need to set the `x` aesthetic to 1)
+
+- Use facets
+- Make sure to deal with `NA` category
+- Describe what you observe in the graph
+
+```{r}
+met_avg |>
+  filter(!is.na(region), !is.na(wind.sp)) |>
+  ggplot() +
+  geom_violin(mapping = aes(y = wind.sp, x = 1)) +
+  facet_wrap(~ region, nrow = 2)
+```
+
+```{r}
+met_avg |>
+  filter(!(region %in% NA), !is.na(dew.point)) |>
+  ggplot() +
+  geom_violin(mapping = aes(y = dew.point, x = 1, fill = region)) +
+  facet_wrap(~region, nrow = 2)
+```
+
+
+### 4. Use `geom_jitter` with `stat_smooth` to examine the association between dew point temperature and wind speed by region
+
+- Colour points by region
+- Make sure to deal with `NA` category
+- Fit a linear regression line by region
+- Describe what you observe in the graph
+
+```{r}
+met_avg |>
+  filter(!is.na(region), !is.na(dew.point), !is.na(wind.sp)) |>
+  ggplot(mapping = aes(x = wind.sp, y = dew.point, color = region))+
+  stat_smooth(method = lm, formula = y ~ x) +
+  geom_jitter() 
+```
+
+_Tips on reducing visual clutter_
+
++  Try using facets. 
++  Remove the intervals for the smoothing lines using `se = FALSE`. 
++  Make the points semi-transparent setting `alpha` to a number between 0 and 1 to further reveal overlapped points.
+
+```{r}
+met_avg |>
+  filter(!is.na(region), !is.na(dew.point), !is.na(wind.sp)) |>
+  ggplot(mapping = aes(
+    x = wind.sp, y = dew.point, color = region))+
+  geom_jitter(alpha = .2) +
+  stat_smooth(method = lm, formula = y ~ x, se = FALSE) +
+  facet_wrap(~ region)
+```
+
+
+### 5. Use `geom_bar` to create barplots of the weather stations by elevation category coloured by region
+
+- Bars by elevation category using `position = "dodge"`
+- Change colors from the default. Color by region using `scale_fill_brewer` see [this](http://rstudio-pubs-static.s3.amazonaws.com/5312_98fc1aba2d5740dd849a5ab797cc2c8d.html)
+- Create nice labels on axes and add a title
+- Try a different theme
+- Describe what you observe in the graph
+- Make sure to deal with `NA`
+
+```{r}
+met_avg |>
+  filter(!is.na(region), !is.na(elev_cat)) |>
+  ggplot() +
+  # theme_minimal() +
+  # theme_bw() +
+  # theme_classic() +
+  # you can remove and customize individual components of the plot
+  theme_void() + theme(axis.text = element_text()) +
+  geom_bar(mapping = aes(x = elev_cat, fill = region), 
+           position = "dodge")+
+  # scale_fill_viridis_d()
+  # scale_fill_brewer(palette = "PuOr")
+  scale_fill_brewer(palette = "Paired") +
+  scale_x_discrete(labels = c("High\n(>252m)", "Low\n(<252m)")) +
+  labs(
+    title = "Number of weather stations by elevation category and region",
+    x = "Elevation", y = "Count", fill = "Region"
+    )
+```
+
+### 6. Use `stat_summary` to examine mean dew point and wind speed by region with standard deviation error bars
+
+- Make sure to remove `NA`
+- Use `fun.data="mean_sdl"` in `stat_summary`
+- Add another layer of `stats_summary` but change the geom to `"errorbar"` (see the help).
+- Describe the graph and what you observe
+
+```{r}
+met_avg |>
+  filter(!is.na(region), !is.na(dew.point)) |>
+  ggplot(mapping=aes(x = region, y = dew.point)) +
+  stat_summary(fun.data = "mean_sdl") +
+  stat_summary(fun.data = "mean_sdl", geom = "errorbar") +
+  labs(x = "", y = expression("Dew Point Temperature ("*degree*C*")"),
+       title = "Mean dew point temperature and 2SD error bar per region") +
+  theme_minimal()
+```
+
+_`expression()` allows mathemmatical expressions in plots. See [here](https://r-graphics.org/recipe-annotate-text-math) for other methods in ggplot_.
+
+```{r}
+met_avg |>
+  filter(!is.na(region), !is.na(wind.sp)) |>
+  ggplot(mapping = aes(x = region, y = wind.sp)) +
+  stat_summary(fun.data = "mean_sdl") +
+  stat_summary(fun.data = "mean_sdl", geom = "errorbar") +
+  labs(x = "", y = "Wind Speed (mph)",
+       title = "Mean wind speed and 2SD error bar per region") +
+  theme_minimal()
+```
+
+- Dew point temperature is...
+- Wind speed is...
+
+### 7. Make a map showing the spatial trend in relative humidity (`rh`) in the US
+
+- Make sure to remove `NA`
+- Use `leaflet()`
+- Make a colour palette with custom colours
+- Use `addMarkers` to include the top 10 places in relative h (hint: this will be useful `rank(-rh) <= 10`)
+- Add a legend
+- Describe trend in RH across the US
+
+```{r}
+# prepare data
+met_avg2 <- met_avg[!is.na(rh)]
+top10 <- met_avg2[rank(-rh) <= 10]
+```
+
+```{r}
+rh_pal <- colorNumeric(
+  # c('lightgrey','lightblue','blue'),
+  viridisLite::viridis(5, direction = -1),
+  domain = met_avg2$rh
+  )
+leaflet(met_avg2) %>%
+  addProviderTiles('OpenStreetMap') |>
+  addCircles(lat = ~lat, lng = ~lon, color = ~rh_pal(rh),
+             label = ~paste0(round(rh,2), ' rh'), 
+             opacity = 1, fillOpacity = 1, radius = 250) |>
+  addMarkers(lat = ~lat, lng = ~lon, 
+             label = ~paste0(round(rh, 2), ' rh'), 
+             data = top10) |>
+  addLegend('bottomleft', pal = rh_pal, values = met_avg2$rh, 
+            title = "Relative Humidity (%)", opacity=1)
+```
+
+
+### 8. Use a ggplot extension
+
+- Pick and extension (except `cowplot`) from [here](https://exts.ggplot2.tidyverse.org/gallery/) and make a plot of your choice using the `met` data (or `met_avg`)
+- Might want to try examples that come with the extension first (e.g. `ggtech`, `gganimate`, `ggforce`)
+
+**`ggridges` example**
+
++ `fig.asp` sets the figure aspect ration in the output.
+
+```{r fig.asp=2}
+library(ggridges)
+met |>
+  group_by(USAFID, day) |>
+  summarise(temp = mean(temp, na.rm = TRUE), .groups = "drop") |>
+  ggplot() +
+  theme_minimal() +
+  geom_density_ridges(
+    aes(x = temp, y = day, group = day),
+    alpha = .5, bandwidth = .3
+    ) +
+  scale_y_reverse(breaks = c(1, 15, 31)) +
+  labs(x = expression("Temperature ("*degree*C*")"), y = "", 
+       title = "Daily temperature distributions in August, 2019 across the US")
+```
+
+**`gganimate` + `ggbeeswarm` example**
+
+```{r}
+library(gganimate)
+library(ggbeeswarm)
+met_daily_avg <- met |>
+  mutate(
+    region = paste(
+      ifelse(lat > 39.71, "North", "South"),
+      ifelse(lon > -98, "East", "West"))
+  ) |>
+  group_by(region, day, USAFID) |>
+  summarise(temp = mean(temp, na.rm = TRUE), .groups = "drop") 
+animated_met <- met_daily_avg |>
+  ggplot() +
+  theme_void() + 
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 14)
+    ) +
+  geom_beeswarm(aes(y = temp, x = region, colour = temp),
+                cex = .75, size = .5, show.legend = FALSE) +
+  scale_colour_viridis_c() +
+  # animate
+  labs(y = "", x = expression("Temperature ("*degree*C*")"),
+       title = "Day: {frame_time}") +
+  transition_time(day) +
+  ease_aes("circular-in-out")
+animate(animated_met, fps = 100, nframes = 3100 / 5)
+```
