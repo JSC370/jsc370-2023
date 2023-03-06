@@ -272,7 +272,8 @@ mt_samples |>
   ) |>
   group_by(medical_specialty) |>
   count(word) |>
-  slice_max(n, n = 1) # ties will appear
+  slice_max(n, n = 1) |> # ties will appear
+  knitr::kable()
 ```
 
 ```{r}
@@ -284,7 +285,8 @@ mt_samples |>
   ) |>
   group_by(medical_specialty) |>
   count(word) |>
-  slice_max(n, n = 5) # ties will appear
+  slice_max(n, n = 5) |> # ties will appear
+  knitr::kable()
 ```
 
 # Question 7 - extra
