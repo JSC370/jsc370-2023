@@ -24,6 +24,7 @@ If you don't already have `tidytext` then you can install with
 
 ```{r, eval=FALSE}
 install.packages("tidytext")
+install.packages("stopwords")
 ```
 
 ### Read in Medical Transcriptions
@@ -52,15 +53,16 @@ head(mt_samples)
 
 We can use `count()` from `dplyr` to figure out how many different categories we have. Are these categories related? overlapping? evenly distributed?
 
+
 ```{r}
-mt_samples |> 
+mt_samples |>
   count(medical_specialty, sort = TRUE) |>
   mutate(medical_specialty = forcats::fct_reorder(medical_specialty, n)) |>
-  ggplot(aes(medical_specialty, n)) +
+  ggplot(aes(medical_specialty, n)) + 
   theme_minimal() +
-  geom_col() +
-  coord_flip() +
-  labs(x = NULL, y = NULL)
+  labs(y = NULL, x = NULL) +
+  geom_col() + 
+  coord_flip()
 ```
 
 ---
@@ -77,16 +79,20 @@ Explain what we see from this result. Does it makes sense? What insights (if any
 tokens <- mt_samples |>
   select(transcription) |>
   unnest_tokens(word, transcription) |>
+  # group_by(word) |>
+  # summarise(n = n()) # same as `count(word)`
   count(word)
 
 tokens |>
+  # arrange(across(n, desc)) |>
+  # head(20) |> # same as `slice_max(n, n = 20)`
   slice_max(n, n = 20) |>
   ggplot(aes(reorder(word, n), n)) +
   theme_minimal() +
   labs(y = NULL, x = NULL) +
   geom_bar(stat = "identity") +
   coord_flip()
-```
+```  
 
 
 ---
@@ -98,7 +104,6 @@ tokens |>
 
 What do we see know that we have removed stop words? Does it give us a better idea of what the text is about?
 
-
 ```{r}
 library(stopwords)
 head(stopwords("english"))
@@ -108,11 +113,10 @@ length(stopwords("english"))
 ```{r}
 tokens_no_stopwords <- tokens |>
   filter(
-    !word %in% stopwords("english") # remove stop words
-    # remove numbers:
-    # you can use grepl() or
-    # stringr::str_detect()
+    !(word %in% stopwords("english")),
+    !grepl("[[:digit:]]+", word)
   ) 
+
 tokens_no_stopwords |>
   slice_max(n, n = 20) |>
   ggplot(aes(reorder(word, n), n)) +
@@ -122,7 +126,8 @@ tokens_no_stopwords |>
   coord_flip()
 ```
 
-Another method for visualizing word counts is using a word cloud via `wordcloud::wordcloud()`. Create a word cloud for the top 50 most frequent words after removing stop words (and numbers).
+
+Another method for visualizing word counts is using a word cloud via `wordcloud::wordcloud()`. Create a world cloud for the top 50 most frequent words after removing stop words (and numbers).
 
 
 ```{r}
@@ -131,8 +136,8 @@ library(wordcloud)
 
 ```{r}
 tokens50 <- tokens_no_stopwords |>
-  slice_max(n, n = 50) 
-wordcloud(tokens50$word, tokens50$n,
+  slice_max(n, n = 50)
+wordcloud(tokens50$word, tokens50$n, 
           colors = brewer.pal(8, "Set2"))
 ```
 
@@ -147,15 +152,39 @@ Repeat question 3, but this time tokenize into bi-grams. How does the result cha
 sw_start <- paste0("^", paste(stopwords("english"), collapse = " |^"), " ")
 # end with any of the stop words
 sw_end <- paste0(" ", paste(stopwords("english"), collapse = "$| "), "$")
-
+# 2-gram
 tokens_bigram <- mt_samples |>
   select(transcription) |>
   unnest_tokens(ngram, transcription, token = "ngrams", n = 2) |>
   filter(
     # remove those with stop words
     !grepl(sw_start, ngram, ignore.case = TRUE),
-    !grepl(sw_end, ngram, ignore.case = TRUE)
-    # remove numbers
+    !grepl(sw_end, ngram, ignore.case = TRUE),
+    !grepl("\\d", ngram) # remove numbers
+  ) |>
+  count(ngram)
+# 3-gram
+tokens_trigram <- mt_samples |>
+  select(transcription) |>
+  unnest_tokens(ngram, transcription, token = "ngrams", n = 3) |>
+  filter(
+    # remove those with stop words
+    !grepl(sw_start, ngram, ignore.case = TRUE),
+    !grepl(sw_end, ngram, ignore.case = TRUE),
+    !grepl("^\\d|\\d$", ngram) # remove if end or start with a number
+  ) |>
+  count(ngram)
+```
+
+```{r eval=FALSE}
+library(stringr) # if you are more comfortable with str_*()
+tokens_trigram <- mt_samples |>
+  select(transcription) |>
+  unnest_tokens(ngram, transcription, token = "ngrams", n = 3) |>
+  filter(
+    !str_detect(ngram, regex(sw_start, ignore_case = TRUE)),
+    !str_detect(ngram, regex(sw_end, ignore_case = TRUE)),
+    !str_detect(ngram, "\\d")
   ) |>
   count(ngram)
 ```
@@ -166,20 +195,39 @@ tokens_bigram |>
   ggplot(aes(reorder(ngram, n), n)) +
   theme_minimal() +
   labs(y = NULL, x = NULL) +
-  geom_bar(stat = "identity") +
+  geom_bar(stat = 'identity') +
+  coord_flip()
+tokens_trigram |>
+  slice_max(n, n = 20) |>
+  ggplot(aes(reorder(ngram, n), n)) +
+  theme_minimal() +
+  labs(y = NULL, x = NULL) +
+  geom_bar(stat = 'identity') +
   coord_flip()
 ```
 
+The word clouds aren't as helpful as the word cloud with "words".
+
+```{r fig.show="hold", out.width="50%"}
+tokens10_bigram <- tokens_bigram |>
+  arrange(across(n, desc)) |>
+  head(10)
+tokens10_trigram <- tokens_trigram |>
+  arrange(across(n, desc)) |>
+  head(10)
+wordcloud(tokens10_bigram$ngram, tokens10_bigram$n)
+wordcloud(tokens10_trigram$ngram, tokens10_trigram$n)
+```
 
 ---
 
 # Question 5
 
-Using the results you got from question 4. Pick a word and count the words that appears after or before it. (Also, try finding pairs of words after and before the word.)
+Using the results you got from question 4. Pick a word and count the words that appears after or before it.
 
 ```{r}
 library(stringr)
-# e.g., patient
+# e.g., words that come before or after patient
 tokens_bigram |>
   filter(str_detect(ngram, regex("\\spatient$|^patient\\s"))) |>
   mutate(word = str_remove(ngram, "patient"),
@@ -194,14 +242,49 @@ tokens_bigram |>
   coord_flip()
 ```
 
+```{r}
+# e.g., pairs of words that come before and after patient
+tokens_trigram |>
+  filter(str_detect(ngram, regex("\\spatient\\s"))) |>
+  mutate(word = str_replace(ngram, "patient", "---")) |>
+  group_by(word) |>
+  summarise(n = sum(n)) |>
+  slice_max(n, n = 50) |>
+  ggplot(aes(reorder(word, n), n)) +
+  theme_minimal() +
+  labs(y = NULL, x = NULL) +
+  geom_bar(stat = "identity") +
+  coord_flip()
+```
+
 ---
 
 # Question 6 
 
-Which words are most used in each of the specialties. you can use `group_by()` and `slice_max()` from `dplyr` to have the calculations be done within each specialty. Remember to remove stop words. How about the most 5 used words?
+Which words are most used in each of the specialties. you can use `group_by()` and ~~`top_n()`~~ `slice_max()` from `dplyr` to have the calculations be done within each specialty. Remember to remove stop words. How about the most 5 used words?
 
 ```{r}
+mt_samples |>
+  unnest_tokens(word, transcription) |>
+  filter(
+    !word %in% stopwords("english"),
+    !grepl("\\d", word)
+  ) |>
+  group_by(medical_specialty) |>
+  count(word) |>
+  slice_max(n, n = 1) # ties will appear
+```
 
+```{r}
+mt_samples |>
+  unnest_tokens(word, transcription) |>
+  filter(
+    !word %in% stopwords("english"),
+    !grepl("\\d", word)
+  ) |>
+  group_by(medical_specialty) |>
+  count(word) |>
+  slice_max(n, n = 5) # ties will appear
 ```
 
 # Question 7 - extra
@@ -216,50 +299,42 @@ Ideas:
 tf_idf_by_specialty <- mt_samples |>
   unnest_tokens(word, transcription) |>
   filter(
-    !word %in% stopwords("english")
-    # try removing numbers
+    !word %in% stopwords("english"),
+    !grepl("[[:digit:]]+", word)
   ) |>
   count(word, medical_specialty) |>
   bind_tf_idf(word, medical_specialty, n)
 tf_idf_by_specialty |>
   group_by(medical_specialty) |>
-  slice_max(tf_idf, n = 5) |>
-  filter(
-    medical_specialty %in% c("Surgery", "Dentistry", "Allergy / Immunology")
-  ) |>
+  slice_max(tf_idf, n = 3) |>
+  filter(medical_specialty %in% c("Surgery", "Dentistry", "Allergy / Immunology")) |>
   ggplot(aes(reorder(word, tf_idf), tf_idf)) +
   theme_minimal() +
   labs(y = NULL, x = NULL) +
-  geom_bar(stat = "identity") +
+  geom_bar(stat = 'identity') +
   coord_flip() +
   facet_wrap(~ medical_specialty, scales = "free_y")
 ```
 
-```{r}
-mt_samples |>
-  filter(str_detect(transcription, " elevator ")) 
-```
 
 -  Sentiment analysis to see if certain specialties are more optimistic than others. How would you define "optimistic"?
 
 ```{r}
 sentiment_list <- get_sentiments("bing")
-
 sentiments_in_med <- tf_idf_by_specialty |>
-  left_join(sentiment_list, by = "word") 
-
-sentiments_in_med_by_sp <- sentiments_in_med |>
+  left_join(sentiment_list, by = "word") |>
   group_by(medical_specialty) |>
   summarise(
-    n_positive = sum(ifelse(sentiment == "positive", n, 0), na.rm = TRUE),
-    n_negative = sum(ifelse(sentiment == "negative", n, 0), na.rm = TRUE),
+    n_positive = sum(if_else(sentiment == "positive", n, 0), na.rm = TRUE),
+    n_negative = sum(if_else(sentiment == "negative", n, 0), na.rm = TRUE) ,
     n = sum(n)
   )
-
-sentiments_in_med_by_sp |>
-  ggplot(aes(reorder(medical_specialty, (n_negative + n_positive) / n))) +
+sentiments_in_med |>
+  mutate(medical_specialty = reorder(
+    medical_specialty, (n_positive + n_negative) / n)) |>
+  ggplot(aes(medical_specialty)) +
   theme_minimal() +
-  geom_col(aes(y = - n_negative / n), fill = "pink") +
+  geom_col(aes(y = -n_negative / n), fill = "pink") +
   geom_col(aes(y = n_positive / n), fill = "darkgreen") +
   labs(x = NULL, y = NULL) +
   coord_flip()
@@ -268,9 +343,13 @@ sentiments_in_med_by_sp |>
 - Find which specialty writes the longest sentences.
 
 ```{r}
-
+mt_samples |>
+  select(medical_specialty, transcription) |>
+  unnest_tokens(sentence, transcription, token = "sentences") |>
+  mutate(words = sapply(tokenizers::tokenize_words(sentence), length))
 ```
 
 # Deliverables
 
 1. Questions 1-7 answered, pdf or html output uploaded to Quercus
+
