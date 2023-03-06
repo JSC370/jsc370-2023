@@ -362,6 +362,30 @@ mt_samples |>
   labs(x = "Number of words in a sentence.", y = NULL) 
 ```
 
+
+```{r}
+# Runshi' version using `stringr`
+#tokenize in sentences 
+tokens <- mt_samples |> select(transcription, medical_specialty) |> 
+  unnest_tokens(sentence, transcription, token = "sentences")
+
+#create summary table of sentence length for each specicalty
+tokens |>
+  mutate(length = stringr::str_count(sentence, "\\w+"))  |>
+  filter(length > 0 & !is.na(length)) |>
+  group_by(medical_specialty) |>
+  summarise(
+    average_length = mean(length),
+    max_length = max(length),
+    min_length = min(length), 
+    n = n()
+  ) |>
+  ggplot(aes(x = average_length, y = reorder(medical_specialty, average_length))) +
+  theme_minimal() +
+  geom_point() +
+  geom_segment(aes(xend = 0, yend = reorder(medical_specialty, average_length))) +
+  labs(y = NULL, x = "Mean number of words in a sentence")
+```
 # Deliverables
 
 1. Questions 1-7 answered, pdf or html output uploaded to Quercus
