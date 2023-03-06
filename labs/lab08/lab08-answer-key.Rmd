@@ -344,11 +344,22 @@ sentiments_in_med |>
 
 - Find which specialty writes the longest sentences.
 
-```{r}
+```{r fig.asp=2}
+library(ggridges)
 mt_samples |>
   select(medical_specialty, transcription) |>
   unnest_tokens(sentence, transcription, token = "sentences") |>
-  mutate(words = sapply(tokenizers::tokenize_words(sentence), length))
+  mutate(n_words = sapply(tokenizers::tokenize_words(sentence), length)) |>
+  ggplot() +
+  theme_minimal() +
+  geom_density_ridges(
+    aes(y = reorder(medical_specialty, n_words, max), 
+        x = n_words, group = medical_specialty),
+    bandwidth = .5, 
+    jittered_points = TRUE, point_alpha = .1,
+    position = position_raincloud(height = .3, ygap = 0)
+  ) +
+  labs(x = "Number of words in a sentence.", y = NULL) 
 ```
 
 # Deliverables
